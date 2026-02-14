@@ -1,0 +1,83 @@
+{
+  "name": "MedicalProfile",
+  "type": "object",
+  "properties": {
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "diabetes_type1",
+          "diabetes_type2",
+          "hypertension",
+          "cardiovascular_disease",
+          "kidney_disease",
+          "celiac_disease",
+          "lactose_intolerance",
+          "high_cholesterol",
+          "gout",
+          "obesity",
+          "anemia",
+          "osteoporosis"
+        ]
+      },
+      "description": "List of medical conditions"
+    },
+    "allergies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Food allergies"
+    },
+    "dietary_preferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "vegetarian",
+          "vegan",
+          "pescatarian",
+          "halal",
+          "kosher",
+          "gluten_free",
+          "dairy_free",
+          "low_sodium",
+          "low_carb",
+          "keto"
+        ]
+      }
+    },
+    "age": {
+      "type": "number"
+    },
+    "weight_kg": {
+      "type": "number"
+    },
+    "height_cm": {
+      "type": "number"
+    },
+    "activity_level": {
+      "type": "string",
+      "enum": [
+        "sedentary",
+        "lightly_active",
+        "moderately_active",
+        "very_active",
+        "extremely_active"
+      ]
+    },
+    "daily_calorie_target": {
+      "type": "number"
+    },
+    "medications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "conditions"
+  ]
+}

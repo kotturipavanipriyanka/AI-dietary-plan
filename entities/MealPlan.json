@@ -1,0 +1,101 @@
+{
+  "name": "MealPlan",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "meals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "breakfast",
+              "lunch",
+              "dinner",
+              "snack"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "calories": {
+            "type": "number"
+          },
+          "protein_g": {
+            "type": "number"
+          },
+          "carbs_g": {
+            "type": "number"
+          },
+          "fat_g": {
+            "type": "number"
+          },
+          "fiber_g": {
+            "type": "number"
+          },
+          "sodium_mg": {
+            "type": "number"
+          },
+          "sugar_g": {
+            "type": "number"
+          },
+          "recipe_instructions": {
+            "type": "string"
+          },
+          "prep_time_minutes": {
+            "type": "number"
+          },
+          "condition_benefits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "total_calories": {
+      "type": "number"
+    },
+    "total_protein": {
+      "type": "number"
+    },
+    "total_carbs": {
+      "type": "number"
+    },
+    "total_fat": {
+      "type": "number"
+    },
+    "ai_notes": {
+      "type": "string",
+      "description": "AI-generated notes about the meal plan"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "in_progress",
+        "completed"
+      ],
+      "default": "planned"
+    }
+  },
+  "required": [
+    "date",
+    "meals"
+  ]
+}
