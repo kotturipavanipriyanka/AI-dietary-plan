@@ -4,7 +4,6 @@ import {
   Plus,
   Search,
   TrendingUp,
-  Flame,
   Apple,
   Droplets,
   Clock,

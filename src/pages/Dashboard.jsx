@@ -7,8 +7,7 @@ import {
   Apple,
   Plus,
   Sparkles,
-  Calendar,
-  ChevronRight
+  Calendar
 } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";

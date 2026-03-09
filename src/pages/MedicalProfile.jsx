@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../Layout';
+import { useProfile } from '../lib/ProfileContext.jsx';
 import { 
   User,
   Heart,
@@ -13,9 +15,27 @@ import {
 } from "lucide-react";
 
 export default function MedicalProfile() {
-  const [conditions, setConditions] = useState([]);
-  const [allergies, setAllergies] = useState([]);
+  const navigate = useNavigate();
+  const { profile, updateProfile } = useProfile();
+
+  const [age, setAge] = useState(profile.age || '');
+  const [weight, setWeight] = useState(profile.weight || '');
+  const [height, setHeight] = useState(profile.height || '');
+  const [calorieTarget, setCalorieTarget] = useState(profile.calorieTarget || '');
+  const [conditions, setConditions] = useState(profile.conditions || []);
+  const [preferences, setPreferences] = useState(profile.preferences || []);
+  const [allergies, setAllergies] = useState(profile.allergies || []);
   const [allergyInput, setAllergyInput] = useState('');
+
+  useEffect(() => {
+    setAge(profile.age || '');
+    setWeight(profile.weight || '');
+    setHeight(profile.height || '');
+    setCalorieTarget(profile.calorieTarget || '');
+    setConditions(profile.conditions || []);
+    setPreferences(profile.preferences || []);
+    setAllergies(profile.allergies || []);
+  }, [profile]);
 
   const conditionsList = [
     'Diabetes Type 1',
@@ -25,8 +45,19 @@ export default function MedicalProfile() {
     'Celiac Disease',
     'Kidney Disease',
     'Heart Disease',
+    'Lactose Intolerant',
     'Obesity'
   ];
+
+  const preferencesList = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Low Sodium', 'Keto'];
+
+  const togglePreference = (pref) => {
+    setPreferences(prev => 
+      prev.includes(pref) 
+        ? prev.filter(p => p !== pref)
+        : [...prev, pref]
+    );
+  };
 
   const toggleCondition = (condition) => {
     setConditions(prev => 
@@ -45,6 +76,20 @@ export default function MedicalProfile() {
 
   const removeAllergy = (allergy) => {
     setAllergies(allergies.filter(a => a !== allergy));
+  };
+
+  const handleSaveProfile = () => {
+    updateProfile({
+      age,
+      weight,
+      height,
+      calorieTarget,
+      conditions,
+      preferences,
+      allergies
+    });
+
+    navigate('/meal-planner');
   };
 
   return (
@@ -77,6 +122,8 @@ export default function MedicalProfile() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Age</label>
                   <input
                     type="number"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
                     placeholder="Enter your age"
                     className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
@@ -86,6 +133,8 @@ export default function MedicalProfile() {
                   <div className="relative">
                     <input
                       type="number"
+                      value={weight}
+                      onChange={(e) => setWeight(e.target.value)}
                       placeholder="70"
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
@@ -97,6 +146,8 @@ export default function MedicalProfile() {
                   <div className="relative">
                     <input
                       type="number"
+                      value={height}
+                      onChange={(e) => setHeight(e.target.value)}
                       placeholder="175"
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
@@ -107,6 +158,8 @@ export default function MedicalProfile() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Daily Calorie Target</label>
                   <input
                     type="number"
+                    value={calorieTarget}
+                    onChange={(e) => setCalorieTarget(e.target.value)}
                     placeholder="2000"
                     className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
@@ -164,12 +217,17 @@ export default function MedicalProfile() {
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Low Sodium', 'Keto'].map((pref) => (
+                {preferencesList.map((pref) => (
                   <label 
                     key={pref}
                     className="flex items-center gap-2 p-3 rounded-lg hover:bg-slate-50 cursor-pointer border border-slate-200"
                   >
-                    <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded" />
+                    <input 
+                      type="checkbox" 
+                      checked={preferences.includes(pref)}
+                      onChange={() => togglePreference(pref)}
+                      className="w-4 h-4 text-emerald-600 rounded" 
+                    />
                     <span className="text-sm text-slate-700">{pref}</span>
                   </label>
                 ))}
@@ -245,7 +303,10 @@ export default function MedicalProfile() {
             <button className="px-6 py-3 text-slate-600 hover:text-slate-900 font-medium transition-colors">
               Cancel
             </button>
-            <button className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg shadow-lg shadow-emerald-200 transition-colors">
+            <button
+              onClick={handleSaveProfile}
+              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg shadow-lg shadow-emerald-200 transition-colors"
+            >
               <Save className="w-4 h-4" />
               Save Profile
             </button>
